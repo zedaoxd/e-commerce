@@ -33,7 +33,7 @@ public class StateService {
     @Transactional(readOnly = true)
     public StateDTO findById(Long id) {
         Optional<StateModel> optional = stateRepository.findById(id);
-        StateModel entity = optional.orElseThrow(() -> new ResourceNotFoundException("Entity not found" + id));
+        StateModel entity = optional.orElseThrow(() -> new ResourceNotFoundException("Entity not found: " + id));
         return new StateDTO(entity);
     }
 
@@ -61,7 +61,7 @@ public class StateService {
         try {
             stateRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Entity not found" + id);
+            throw new ResourceNotFoundException("Entity not found: " + id);
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
