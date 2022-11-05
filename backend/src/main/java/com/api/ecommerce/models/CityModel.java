@@ -2,15 +2,14 @@ package com.api.ecommerce.models;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -21,23 +20,20 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tb_state")
+@Table(name = "tb_city")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class StateModel implements Serializable {
+public class CityModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(nullable = false, length = 80)
+    @Column(nullable = false, length = 100)
     private String name;
-
-    @Column(nullable = false, length = 2)
-    private String initials;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createDate;
@@ -45,8 +41,9 @@ public class StateModel implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updateDate;
 
-    @OneToMany(mappedBy = "state")
-    private Set<CityModel> cities = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private StateModel state;
 
     @PrePersist
     public void prePersist() {

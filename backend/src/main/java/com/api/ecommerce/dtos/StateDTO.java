@@ -1,8 +1,12 @@
 package com.api.ecommerce.dtos;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.api.ecommerce.models.CityModel;
 import com.api.ecommerce.models.StateModel;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +28,16 @@ public class StateDTO {
     @NotBlank(message = "Cannot blank")
     private String initials;
 
+    private Set<CityDTO> cities = new HashSet<>();
+
     public StateDTO(StateModel entity) {
-        this(entity.getId(), entity.getName(), entity.getInitials());
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.initials = entity.getInitials();
+    }
+
+    public StateDTO(StateModel entity, Set<CityModel> cities) {
+        this(entity);
+        cities.forEach(x -> this.cities.add(new CityDTO(x)));
     }
 }

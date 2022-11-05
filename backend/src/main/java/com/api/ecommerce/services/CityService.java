@@ -12,51 +12,50 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.ecommerce.dtos.StateDTO;
+import com.api.ecommerce.dtos.CityDTO;
 import com.api.ecommerce.models.CityModel;
-import com.api.ecommerce.models.StateModel;
 import com.api.ecommerce.repositories.CityRepository;
 import com.api.ecommerce.repositories.StateRepository;
 import com.api.ecommerce.services.exceptions.DatabaseException;
 import com.api.ecommerce.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class StateService {
-
-    @Autowired
-    private StateRepository stateRepository;
+public class CityService {
 
     @Autowired
     private CityRepository cityRepository;
 
+    @Autowired
+    private StateRepository stateRepository;
+
     @Transactional(readOnly = true)
-    public Page<StateDTO> findAllPaged(Pageable pageable) {
-        Page<StateModel> pageModels = stateRepository.findAll(pageable);
-        return pageModels.map(x -> new StateDTO(x));
+    public Page<CityDTO> findAllPaged(Pageable pageable) {
+        Page<CityModel> pageModels = cityRepository.findAll(pageable);
+        return pageModels.map(x -> new CityDTO(x));
     }
 
     @Transactional(readOnly = true)
-    public StateDTO findById(Long id) {
-        Optional<StateModel> optional = stateRepository.findById(id);
-        StateModel entity = optional.orElseThrow(() -> new ResourceNotFoundException("Entity not found: " + id));
-        return new StateDTO(entity, entity.getCities());
+    public CityDTO findById(Long id) {
+        Optional<CityModel> optional = cityRepository.findById(id);
+        CityModel entity = optional.orElseThrow(() -> new ResourceNotFoundException("Entity not found: " + id));
+        return new CityDTO(entity);
     }
 
     @Transactional
-    public StateDTO insert(StateDTO dto) {
-        StateModel entity = new StateModel();
+    public CityDTO insert(CityDTO dto) {
+        CityModel entity = new CityModel();
         copyDtoToEntity(dto, entity);
-        entity = stateRepository.save(entity);
-        return new StateDTO(entity);
+        entity = cityRepository.save(entity);
+        return new CityDTO(entity);
     }
 
     @Transactional
-    public StateDTO update(StateDTO dto, Long id) {
+    public CityDTO update(CityDTO dto, Long id) {
         try {
-            StateModel entity = stateRepository.getReferenceById(id);
+            CityModel entity = cityRepository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
-            entity = stateRepository.save(entity);
-            return new StateDTO(entity);
+            entity = cityRepository.save(entity);
+            return new CityDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
@@ -64,7 +63,7 @@ public class StateService {
 
     public void delete(Long id) {
         try {
-            stateRepository.deleteById(id);
+            cityRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Entity not found: " + id);
         } catch (DataIntegrityViolationException e) {
@@ -72,14 +71,9 @@ public class StateService {
         }
     }
 
-    private void copyDtoToEntity(StateDTO dto, StateModel entity) {
+    private void copyDtoToEntity(CityDTO dto, CityModel entity) {
         entity.setName(dto.getName());
-        entity.setInitials(dto.getInitials());
-
-        entity.getCities().clear();
-        dto.getCities().forEach(x -> {
-            CityModel city = cityRepository.getReferenceById(x.getId());
-            entity.getCities().add(city);
-        });
+        entity.setState(stateRepository.getReferenceById(dto.getStateId()));
     }
+
 }
