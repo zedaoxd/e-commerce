@@ -1,6 +1,5 @@
 package com.api.ecommerce.models;
 
-import java.io.Serializable;
 import java.time.Instant;
 
 import javax.persistence.Column;
@@ -17,11 +16,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tb_category")
+@Table(name = "tb_brand")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryModel implements Serializable {
+public class BrandModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
