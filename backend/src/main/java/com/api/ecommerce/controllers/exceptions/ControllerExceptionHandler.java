@@ -52,9 +52,20 @@ public class ControllerExceptionHandler {
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
 
-        e.getBindingResult().getFieldErrors().forEach(f -> {
-            err.addError(f.getField(), f.getDefaultMessage());
-        });
+        e.getBindingResult().getFieldErrors().forEach(f -> err.addError(f.getField(), f.getDefaultMessage()));
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<StandardError> IllegalArgument(IllegalArgumentException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(
+                Instant.now(),
+                status.value(),
+                "bad request",
+                e.getMessage(),
+                request.getRequestURI());
 
         return ResponseEntity.status(status).body(err);
     }

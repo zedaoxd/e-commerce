@@ -1,19 +1,19 @@
 package com.api.ecommerce.dtos;
 
-import java.io.Serializable;
+import com.api.ecommerce.models.PersonModel;
+import com.api.ecommerce.models.RolePersonModel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.br.CPF;
-
-import com.api.ecommerce.models.PersonModel;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -43,13 +43,22 @@ public class PersonDTO implements Serializable {
     @NotNull(message = "cannot be NULL")
     private Long cityId;
 
+    private List<RolePersonDTO> rolePersons = new ArrayList<>();
+
     public PersonDTO(PersonModel entity) {
-        this(entity.getId(),
-                entity.getName(),
-                entity.getCpf(),
-                entity.getEmail(),
-                entity.getStreet(),
-                entity.getCep(),
-                entity.getCity().getId());
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.cpf = entity.getCpf();
+        this.email = entity.getEmail();
+        this.street = entity.getStreet();
+        this.cep = entity.getCep();
+        this.cityId = entity.getCity().getId();
+    }
+
+    public PersonDTO(PersonModel entity, List<RolePersonModel> rolePersons) {
+        this(entity);
+        List<RolePersonDTO> l = rolePersons.stream().map(RolePersonDTO::new).toList();
+        this.rolePersons.clear();
+        this.rolePersons.addAll(l);
     }
 }

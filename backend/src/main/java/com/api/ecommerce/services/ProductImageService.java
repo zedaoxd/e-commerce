@@ -54,7 +54,7 @@ public class ProductImageService {
             return new ProductImageDTO(entity);
         }
         catch (IOException e) {
-            throw new ResourceNotFoundException("Entity not found");
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
