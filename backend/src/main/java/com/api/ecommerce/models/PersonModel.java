@@ -1,9 +1,6 @@
 package com.api.ecommerce.models;
 
-import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -23,12 +19,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tb_city")
+@Table(name = "tb_person")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CityModel implements Serializable {
+public class PersonModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +34,21 @@ public class CityModel implements Serializable {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(nullable = false, length = 11)
+    private String cpf;
+
+    @Column(nullable = false, length = 80)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, length = 80)
+    private String street;
+
+    @Column(nullable = false, length = 8)
+    private String cep;
+
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createDate;
 
@@ -45,11 +56,8 @@ public class CityModel implements Serializable {
     private Instant updateDate;
 
     @ManyToOne
-    @JoinColumn(name = "state_id")
-    private StateModel state;
-
-    @OneToMany(mappedBy = "city")
-    private Set<PersonModel> persons = new HashSet<>();
+    @JoinColumn(name = "city_id")
+    private CityModel city;
 
     @PrePersist
     public void prePersist() {
@@ -60,4 +68,5 @@ public class CityModel implements Serializable {
     public void preUpdate() {
         updateDate = Instant.now();
     }
+
 }

@@ -38,7 +38,7 @@ public class CityService {
     public CityDTO findById(Long id) {
         Optional<CityModel> optional = cityRepository.findById(id);
         CityModel entity = optional.orElseThrow(() -> new ResourceNotFoundException("Entity not found: " + id));
-        return new CityDTO(entity);
+        return new CityDTO(entity, entity.getPersons());
     }
 
     @Transactional

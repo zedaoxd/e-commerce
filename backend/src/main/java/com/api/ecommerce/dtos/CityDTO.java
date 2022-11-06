@@ -1,10 +1,14 @@
 package com.api.ecommerce.dtos;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.api.ecommerce.models.CityModel;
+import com.api.ecommerce.models.PersonModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +28,18 @@ public class CityDTO {
     @NotNull(message = "cannot be null")
     private Long stateId;
 
+    private Set<PersonDTO> persons = new HashSet<>();
+
     public CityDTO(CityModel entity) {
-        this(entity.getId(), entity.getName(), entity.getState().getId());
+        id = entity.getId();
+        name = entity.getName();
+        stateId = entity.getState().getId();
+    }
+
+    public CityDTO(CityModel entity, Set<PersonModel> persons) {
+        id = entity.getId();
+        name = entity.getName();
+        stateId = entity.getState().getId();
+        persons.forEach(x -> this.persons.add(new PersonDTO(x)));
     }
 }
