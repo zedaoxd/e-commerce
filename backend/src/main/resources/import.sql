@@ -18,3 +18,13 @@ INSERT INTO tb_city(name, create_Date, update_Date, state_id) VALUES ('Guarulhos
 INSERT INTO tb_person(name, cpf, email, password, street, cep, create_Date, update_Date, city_id) VALUES ('maria', '42409041027', 'maria@gmail.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG', 'Rua Fagundes', '39402784', NOW(), NOW(), 1);
 INSERT INTO tb_person(name, cpf, email, password, street, cep, create_Date, update_Date, city_id) VALUES ('bob', '38296260026', 'bob@gmail.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG', 'Rua Das Garças', '46283746', NOW(), NOW(), 2);
 INSERT INTO tb_person(name, cpf, email, password, street, cep, create_Date, update_Date, city_id) VALUES ('ana', '49811279012', 'ana@gmail.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG', 'Rua 24 de Março', '57392059', NOW(), NOW(), 2);
+
+INSERT INTO tb_product(short_Description, long_Description, cost_Value, sele_Value, brand_id, category_id, create_Date, update_Date) VALUES ('banana', 'fruta amarela', 7.55, 13.99, 1, 1, NOW(), NOW());
+INSERT INTO tb_product(short_Description, long_Description, cost_Value, sele_Value, brand_id, category_id, create_Date, update_Date) VALUES ('PC GAMER', 'pc master race', 3999.99, 8000.10, 1, 1, NOW(), NOW());
+INSERT INTO tb_product(short_Description, long_Description, cost_Value, sele_Value, brand_id, category_id, create_Date, update_Date) VALUES ('maça', 'fruta vermelha', 3.99, 17.99, 1, 1, NOW(), NOW());
+INSERT INTO tb_product(short_Description, long_Description, cost_Value, sele_Value, brand_id, category_id, create_Date, update_Date) VALUES ('pera', 'fruta verse', 7.55, 9.76, 1, 1, NOW(), NOW());
+
+INSERT INTO tb_role(authority) VALUES ('ROLE_ADMIN');
+INSERT INTO tb_role(authority) VALUES ('ROLE_GUEST');
+INSERT INTO tb_role(authority) VALUES ('ROLE_MODERATOR');
+

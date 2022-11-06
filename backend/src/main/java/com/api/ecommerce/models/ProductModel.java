@@ -1,41 +1,52 @@
 package com.api.ecommerce.models;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.Instant;
+
 @Entity
-@Table(name = "tb_category")
+@Table(name = "tb_product")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CategoryModel implements Serializable {
+public class ProductModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String name;
+    @Column(nullable = false)
+    private String shortDescription;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String longDescription;
+
+    @Column(nullable = false)
+    private Double costValue;
+
+    @Column(nullable = false)
+    private Double seleValue;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private BrandModel brand;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryModel category;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createDate;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updateDate;
-
-    @OneToMany(mappedBy = "category")
-    List<ProductModel> products = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
@@ -46,4 +57,5 @@ public class CategoryModel implements Serializable {
     public void preUpdate() {
         updateDate = Instant.now();
     }
+
 }
