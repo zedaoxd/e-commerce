@@ -24,6 +24,10 @@ public class ProductImageModel implements Serializable {
 
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private ProductModel product;
+
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createDate;
 
